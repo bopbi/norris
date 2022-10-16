@@ -33,17 +33,18 @@ class MainViewModel : ViewModel() {
             val request = Request.Builder().url(url).build()
             val response = OkHttpClient().newCall(request).execute()
             if (response.isSuccessful) {
-                val json = response.body?.string()
+                val json = response.body?.string() ?: ""
                 val moshi = Moshi.Builder().build()
                 val jsonAdapter: JsonAdapter<Joke> = moshi.adapter()
-
-                val randomJoke = jsonAdapter.fromJson(json)
-
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        randomJoke = randomJoke
-                    )
+                runCatching {
+                    val randomJoke = jsonAdapter.fromJson(json)
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            randomJoke = randomJoke
+                        )
+                    }
                 }
+
             }
         }
     }

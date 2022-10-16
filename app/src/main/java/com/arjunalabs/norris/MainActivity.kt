@@ -64,6 +64,7 @@ fun RandomJokeContent(viewModel: MainViewModel = MainViewModel()) {
     val randomJoke = uiState.randomJoke
     if (randomJoke == null) {
         viewModel.fetchRandomJoke()
+        CircularProgressIndicator()
     } else {
         JokeContent(joke = randomJoke)
     }
